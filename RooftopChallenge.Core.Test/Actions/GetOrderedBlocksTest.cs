@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Moq;
 using RooftopChallenge.Core.Actions;
 using RooftopChallenge.Core.Domain;
 using Xunit;
 using System.Linq;
-using System.Collections.Immutable;
+using AutoFixture;
+using RooftopChallenge.Core.Test.utils;
 
 namespace RooftopChallenge.Core.Test.Actions
 {
@@ -14,21 +14,29 @@ namespace RooftopChallenge.Core.Test.Actions
         private List<string> _actualOrderedBlocks;
         private List<string> _orderedBlocks;
         private List<string> _unOrderedList;
-        private ICheckBlockService _checkBlockService;
+        private DummyCheckBlockService _checkBlockService;
+        private Fixture _fixture = new ();
 
-     
-        [Fact]
-        public void Given_An_UnOrderedBlocks_When_GetOrderedBlocks_Should_Return_Blocks_Ordered()
+
+        [Theory]       
+        [InlineData(5)]
+        [InlineData(10)]
+        [InlineData(11)]
+        [InlineData(12)]
+        [InlineData(13)]
+        [InlineData(20)]        
+        public void Given_An_UnOrderedBlocks_When_GetOrderedBlocks_Should_Return_Blocks_Ordered(int blockListLength)
         {
-            GivenAnOrderedListOfBlocks();
+            GivenAnOrderedListOfBlocks(blockListLength);
             GivenAnUnorderedListOfBlocks();
             GivenACheckBlocksService();
 
             WhenGetOrderedBlocks();
 
             ShouldReturnBlocksOrdered();
+            ShouldCallCheckBlockService();
         }
-
+     
         private void GivenACheckBlocksService()
         {
             _checkBlockService = new DummyCheckBlockService(_orderedBlocks);
@@ -36,24 +44,13 @@ namespace RooftopChallenge.Core.Test.Actions
 
         private void GivenAnUnorderedListOfBlocks()
         {
-            _unOrderedList = new List<string>()
-            {
-                "A",
-                "D",
-                "C",
-                "B"
-            };
-        }
+            _unOrderedList = new List<String>() { _orderedBlocks.First() };
+            _unOrderedList.AddRange(Helper.Shuffle(_orderedBlocks.Skip(1)));
+        }        
 
-        private void GivenAnOrderedListOfBlocks()
+        private void GivenAnOrderedListOfBlocks(int blockListLength)
         {
-            _orderedBlocks = new List<string>()
-            {
-                "A",
-                "B",
-                "C",
-                "D"
-            };
+            _orderedBlocks = _fixture.CreateMany<string>(blockListLength).ToList();
         }
 
         private void ShouldReturnBlocksOrdered()
@@ -65,24 +62,16 @@ namespace RooftopChallenge.Core.Test.Actions
         {
             _actualOrderedBlocks = new GetOrderedBlocks(_checkBlockService).Invoke(_unOrderedList);
         }
+
+        private void ShouldCallCheckBlockService()
+        {
+            var bestCase = _orderedBlocks.Count - 1;                
+
+            Assert.True(_checkBlockService._calls >= bestCase );
+        }       
+
     }
 
-
-    public class DummyCheckBlockService: ICheckBlockService
-    {
-        private readonly string _orderedBlocks;
-
-        public DummyCheckBlockService(List<String> orderedBlocks)
-        {
-            _orderedBlocks = String.Join("",orderedBlocks);
-        }
-
-        public bool AreConsequent(ImmutableList<string> list)
-        {
-            var input = string.Join("",list);
-
-            return _orderedBlocks.Contains(input);
-        }
-    }
+   
 
 }
