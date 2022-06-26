@@ -1,9 +1,10 @@
 ﻿using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 namespace RooftopChallenge.Core.Domain
 {
     public interface ICheckBlockService
     {
-        bool AreConsequent(ImmutableList<string> list);
+        Task<bool> AreConsequent(ImmutableList<string> list);
     }
 }

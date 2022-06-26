@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RooftopChallenge.Core.Domain;
 using System.Linq;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 namespace RooftopChallenge.Core.Actions
 {
@@ -15,15 +16,15 @@ namespace RooftopChallenge.Core.Actions
             _checkBlockService = checkBlockService;
         }
 
-        public List<String> Invoke(List<string> unOrderedList)
+        public async Task<List<String>> Invoke(List<string> unOrderedList)
         {
             var orderedList = ImmutableList.Create(unOrderedList[0]) ;
             var leftElements = unOrderedList.Skip(1).ToImmutableList();        
 
-            return OrderBlocks(orderedList, leftElements).ToList();
+            return (await OrderBlocks(orderedList, leftElements)).ToList();
         }
 
-        private ImmutableList<string> OrderBlocks(ImmutableList<string> orderedList, ImmutableList<string> leftElements)
+        private async Task<ImmutableList<string>> OrderBlocks(ImmutableList<string> orderedList, ImmutableList<string> leftElements)
         {
             if(!leftElements.Any())
             {
@@ -36,14 +37,14 @@ namespace RooftopChallenge.Core.Actions
             {
                 var listToCheck = orderedList.Add(elem);
 
-                if (_checkBlockService.AreConsequent(listToCheck))
+                if (await _checkBlockService.AreConsequent(listToCheck))
                 {
                     nextElement = elem;
                     break;
                 }
             }
 
-            return OrderBlocks(orderedList.Add(nextElement), leftElements.Remove(nextElement));
+            return await OrderBlocks(orderedList.Add(nextElement), leftElements.Remove(nextElement));
         }
 
     }

@@ -5,4 +5,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RooftopChallenge.Core\RooftopChallenge.Core.csproj" />
+    <ProjectReference Include="..\RooftopChallenge.Infrastructure\RooftopChallenge.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

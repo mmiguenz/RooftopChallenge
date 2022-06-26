@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 using RooftopChallenge.Core.Domain;
 
 namespace RooftopChallenge.Core.Test.utils
@@ -15,12 +16,12 @@ namespace RooftopChallenge.Core.Test.utils
             _orderedBlocks = String.Join("", orderedBlocks);
         }
 
-        public bool AreConsequent(ImmutableList<string> list)
+        public Task<bool> AreConsequent(ImmutableList<string> list)
         {
             Calls++;
             var input = string.Join("", list);
 
-            return _orderedBlocks.Contains(input);
+            return Task.FromResult(_orderedBlocks.Contains(input));
         }
 
 

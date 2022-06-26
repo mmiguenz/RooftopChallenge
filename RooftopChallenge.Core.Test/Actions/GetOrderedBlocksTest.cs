@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using RooftopChallenge.Core.Actions;
-using RooftopChallenge.Core.Domain;
 using Xunit;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using RooftopChallenge.Core.Test.utils;
 
@@ -25,13 +25,13 @@ namespace RooftopChallenge.Core.Test.Actions
         [InlineData(12)]
         [InlineData(13)]
         [InlineData(20)]        
-        public void Given_An_UnOrderedBlocks_When_GetOrderedBlocks_Should_Return_Blocks_Ordered(int blockListLength)
+        public async Task Given_An_UnOrderedBlocks_When_GetOrderedBlocks_Should_Return_Blocks_Ordered(int blockListLength)
         {
             GivenAnOrderedListOfBlocks(blockListLength);
             GivenAnUnorderedListOfBlocks();
             GivenACheckBlocksService();
 
-            WhenGetOrderedBlocks();
+            await WhenGetOrderedBlocks();
 
             ShouldReturnBlocksOrdered();
             ShouldCallCheckBlockService();
@@ -58,9 +58,9 @@ namespace RooftopChallenge.Core.Test.Actions
             Assert.Equal(_orderedBlocks, _actualOrderedBlocks);
         }
 
-        private void WhenGetOrderedBlocks()
+        private async Task WhenGetOrderedBlocks()
         {
-            _actualOrderedBlocks = new GetOrderedBlocks(_checkBlockService).Invoke(_unOrderedList);
+            _actualOrderedBlocks = await  new GetOrderedBlocks(_checkBlockService).Invoke(_unOrderedList);
         }
 
         private void ShouldCallCheckBlockService()
