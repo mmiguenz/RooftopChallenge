@@ -67,7 +67,7 @@ namespace RooftopChallenge.Core.Test.Actions
         {
             var bestCase = _orderedBlocks.Count - 1;                
 
-            Assert.True(_checkBlockService._calls >= bestCase );
+            Assert.True(_checkBlockService.Calls >= bestCase );
         }       
 
     }

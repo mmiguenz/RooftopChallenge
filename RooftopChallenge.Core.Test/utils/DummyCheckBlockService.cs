@@ -8,7 +8,7 @@ namespace RooftopChallenge.Core.Test.utils
     public class DummyCheckBlockService : ICheckBlockService
     {
         private readonly string _orderedBlocks;
-        public int _calls = 0;
+        public int Calls { get; private set; }
 
         public DummyCheckBlockService(List<String> orderedBlocks)
         {
@@ -17,7 +17,7 @@ namespace RooftopChallenge.Core.Test.utils
 
         public bool AreConsequent(ImmutableList<string> list)
         {
-            _calls++;
+            Calls++;
             var input = string.Join("", list);
 
             return _orderedBlocks.Contains(input);
