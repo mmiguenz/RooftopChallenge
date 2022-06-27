@@ -20,6 +20,7 @@ namespace RooftopChallenge
             var httpClient = BuildHttpClient();
             var checkBlockService = new HttpCheckBlockService(httpClient);
             var getOrderedBlocksAction = new GetOrderedBlocks(checkBlockService);
+            var token = Environment.GetEnvironmentVariable("TOKEN");
 
             var blocks = new List<string>()
             {
@@ -45,7 +46,7 @@ namespace RooftopChallenge
             
             var checkBlockResponse =
                 await httpClient.PostAsync(
-                    "/check?token=28320b9d-bd3b-4ade-a655-12899924276f",
+                    $"/check?token={token}",
                     jsonRequest);
             
             var response = await checkBlockResponse.Content.ReadFromJsonAsync<CheckBlockResponse>();

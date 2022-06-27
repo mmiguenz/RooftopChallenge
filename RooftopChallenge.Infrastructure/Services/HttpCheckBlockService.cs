@@ -23,6 +23,7 @@ namespace RooftopChallenge.Infrastructure.Services
 
         public async Task<bool> AreConsequent(ImmutableList<string> list)
         {
+            var token = Environment.GetEnvironmentVariable("TOKEN");
             var request = new CheckBlockRequest(list.ToList());
             var jsonRequest = new StringContent(
                 JsonSerializer.Serialize(request),
@@ -31,7 +32,7 @@ namespace RooftopChallenge.Infrastructure.Services
 
             var checkBlockResponse =
                 await _httpClient.PostAsync(
-                    "/check?token=28320b9d-bd3b-4ade-a655-12899924276f",
+                    $"/check?token={token}",
                     jsonRequest);
             var response = await checkBlockResponse.Content.ReadFromJsonAsync<CheckBlockResponse>();
 
