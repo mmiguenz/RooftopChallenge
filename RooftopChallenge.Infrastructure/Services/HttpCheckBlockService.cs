@@ -21,10 +21,11 @@ namespace RooftopChallenge.Infrastructure.Services
             _httpClient = httpClient;
         }
 
-        public async Task<bool> AreConsequent(ImmutableList<string> list)
+        public async Task<bool> AreConsequent(string firstElem, string secondElem)
         {
             var token = Environment.GetEnvironmentVariable("TOKEN");
-            var request = new CheckBlockRequest(list.ToList());
+            var listToCheck = new List<string>() {firstElem, secondElem};
+            var request = new CheckBlockRequest(listToCheck);
             var jsonRequest = new StringContent(
                 JsonSerializer.Serialize(request),
                 Encoding.UTF8,

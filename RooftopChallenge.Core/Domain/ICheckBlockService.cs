@@ -5,6 +5,6 @@ namespace RooftopChallenge.Core.Domain
 {
     public interface ICheckBlockService
     {
-        Task<bool> AreConsequent(ImmutableList<string> list);
+        Task<bool> AreConsequent(string firstElem, string secondElem);
     }
 }

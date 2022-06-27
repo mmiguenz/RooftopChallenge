@@ -24,8 +24,7 @@ namespace RooftopChallenge.Core.Test.Actions
         [InlineData(20)]
         [InlineData(30)]
         [InlineData(40)]
-        [InlineData(50)]    
-        
+        [InlineData(50)]   
         public async Task Given_An_UnOrderedBlocks_When_GetOrderedBlocks_Should_Return_Blocks_Ordered(int blockListLength)
         {
             GivenAnOrderedListOfBlocks(blockListLength);

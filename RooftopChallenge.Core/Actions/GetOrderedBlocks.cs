@@ -32,9 +32,8 @@ namespace RooftopChallenge.Core.Actions
 
                     var lastSorted = ol.Last();
                     var currentElem = blocks[i];
-                    var listToCheck = ImmutableList.Create<string>().Add(lastSorted).Add(currentElem);
 
-                    if (await _checkBlockService.AreConsequent(listToCheck))
+                    if (await _checkBlockService.AreConsequent(lastSorted, currentElem))
                     {
                         ol.Add(currentElem);
                         alreadyProcessedIndexes[i] = true;
@@ -45,6 +44,4 @@ namespace RooftopChallenge.Core.Actions
             return ol;
         }
     }
-
-   
 }

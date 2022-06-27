@@ -11,15 +11,15 @@ namespace RooftopChallenge.Core.Test.utils
         private readonly string _orderedBlocks;
         public int Calls { get; private set; }
 
-        public DummyCheckBlockService(List<String> orderedBlocks)
+        public DummyCheckBlockService(List<string> orderedBlocks)
         {
-            _orderedBlocks = String.Join("", orderedBlocks);
+            _orderedBlocks = string.Join("", orderedBlocks);
         }
 
-        public Task<bool> AreConsequent(ImmutableList<string> list)
+        public Task<bool> AreConsequent(string firstElem, string secondElem)
         {
             Calls++;
-            var input = string.Join("", list);
+            var input = firstElem + secondElem;
 
             return Task.FromResult(_orderedBlocks.Contains(input));
         }
