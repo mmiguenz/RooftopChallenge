@@ -17,40 +17,7 @@ namespace RooftopChallenge.Core.Actions
             _checkBlockService = checkBlockService;
         }
 
-        public async Task<List<String>> Invoke(List<string> unOrderedList)
-        {
-            var orderedList = ImmutableList.Create(unOrderedList[0]);
-            var leftElements = unOrderedList.Skip(1).ToImmutableList();
-
-           return (await OrderBlocksRecursive(orderedList, leftElements)).ToList();
-          // return (await OrderBlocksIterative(unOrderedList.ToImmutableList())).ToList();
-        }
-
-        private async Task<ImmutableList<string>> OrderBlocksRecursive(ImmutableList<string> orderedList,
-            ImmutableList<string> leftElements)
-        {
-            if (!leftElements.Any())
-            {
-                return orderedList;
-            }
-
-            var nextElement = "";
-
-            foreach (var elem in leftElements)
-            {
-                var listToCheck = orderedList.Add(elem);
-
-                if (await _checkBlockService.AreConsequent(listToCheck))
-                {
-                    nextElement = elem;
-                    break;
-                }
-            }
-
-            return await OrderBlocksRecursive(orderedList.Add(nextElement), leftElements.Remove(nextElement));
-        }
-
-        private async Task<ImmutableList<string>> OrderBlocksIterative(ImmutableList<string> blocks)
+        public async Task<List<string>> Invoke(List<string> blocks)
         {
             var ol = new List<string> {blocks.First()};
             var alreadyProcessedIndexes = Enumerable.Range(0, blocks.Count).Select(_ => false).ToList();
@@ -75,9 +42,8 @@ namespace RooftopChallenge.Core.Actions
                 }
             }
 
-            return ol.ToImmutableList();
+            return ol;
         }
-
     }
 
    

@@ -15,11 +15,15 @@ namespace RooftopChallenge
 {
     class Program
     {
+        private static HttpClient _httpClient;
+        private static HttpCheckBlockService _checkBlockService;
+        private static GetOrderedBlocks _getOrderedBlocksAction;
+
         static async Task Main(string[] args)
         {
-            var httpClient = BuildHttpClient();
-            var checkBlockService = new HttpCheckBlockService(httpClient);
-            var getOrderedBlocksAction = new GetOrderedBlocks(checkBlockService);
+            _httpClient = BuildHttpClient();
+            _checkBlockService = new HttpCheckBlockService(_httpClient);
+            _getOrderedBlocksAction = new GetOrderedBlocks(_checkBlockService);
             var token = Environment.GetEnvironmentVariable("TOKEN");
 
             var blocks = new List<string>()
@@ -34,9 +38,10 @@ namespace RooftopChallenge
                 "8d4OqfTOZuEajZCUYVyDMNfVtg0sIZDworu4g3yX2DOiZC9CZF4kvosYzdxfZYdqvBfulo3aDraGsboRZ0kfPlCDjzNPWtTINQje",
                 "f2oLIsvUn2vVV1w8GOSNSniafEVlLjAdiTvih5HvpYIKn1y6nFohZr2ObEmILyRIItPYaH3iaRMaitr35JI5pGGeRxdbivXccDpo"
             };
-            var orderedBlocks =  await  getOrderedBlocksAction.Invoke(blocks);
+            
+            var orderedBlocks =  await  Check(blocks, "");
+            
             Console.WriteLine($"Ordered Blocks: {string.Join("",orderedBlocks)}");
-
 
             var request = new {encoded = string.Join("", orderedBlocks)};
             var jsonRequest = new StringContent(
@@ -45,7 +50,7 @@ namespace RooftopChallenge
                 MediaTypeNames.Application.Json);
             
             var checkBlockResponse =
-                await httpClient.PostAsync(
+                await _httpClient.PostAsync(
                     $"/check?token={token}",
                     jsonRequest);
             
@@ -53,6 +58,11 @@ namespace RooftopChallenge
             
             
             Console.WriteLine($"Result verification: {response?.message}");
+        }
+
+        private static async Task<List<string>> Check(List<string> blocks, string token)
+        {
+            return await _getOrderedBlocksAction.Invoke(blocks);
         }
 
         private static HttpClient BuildHttpClient()
