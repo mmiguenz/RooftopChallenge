@@ -22,8 +22,8 @@ namespace RooftopChallenge.Core.Actions
             var orderedList = ImmutableList.Create(unOrderedList[0]);
             var leftElements = unOrderedList.Skip(1).ToImmutableList();
 
-           // return (await OrderBlocksRecursive(orderedList, leftElements)).ToList();
-           return (await OrderBlocksIterative(unOrderedList.ToImmutableList())).ToList();
+           return (await OrderBlocksRecursive(orderedList, leftElements)).ToList();
+          // return (await OrderBlocksIterative(unOrderedList.ToImmutableList())).ToList();
         }
 
         private async Task<ImmutableList<string>> OrderBlocksRecursive(ImmutableList<string> orderedList,

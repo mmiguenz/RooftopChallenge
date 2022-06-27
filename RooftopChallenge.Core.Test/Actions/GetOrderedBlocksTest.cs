@@ -21,9 +21,9 @@ namespace RooftopChallenge.Core.Test.Actions
         [Theory]       
         [InlineData(5)]
         [InlineData(10)]
-        [InlineData(11)]
-        [InlineData(12)]
-        [InlineData(13)]
+        [InlineData(20)]
+        [InlineData(30)]
+        [InlineData(40)]
         [InlineData(50)]    
         
         public async Task Given_An_UnOrderedBlocks_When_GetOrderedBlocks_Should_Return_Blocks_Ordered(int blockListLength)
