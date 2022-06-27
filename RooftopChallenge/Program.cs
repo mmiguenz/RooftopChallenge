@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using RooftopChallenge.Core.Actions;
-using RooftopChallenge.Infrastructure;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Mime;
@@ -39,7 +37,7 @@ namespace RooftopChallenge
                 "f2oLIsvUn2vVV1w8GOSNSniafEVlLjAdiTvih5HvpYIKn1y6nFohZr2ObEmILyRIItPYaH3iaRMaitr35JI5pGGeRxdbivXccDpo"
             };
             
-            var orderedBlocks =  await  Check(blocks, "");
+            var orderedBlocks =  await Check(blocks, "");
             
             Console.WriteLine($"Ordered Blocks: {string.Join("",orderedBlocks)}");
 
